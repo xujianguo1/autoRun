@@ -1,5 +1,5 @@
 import uiautomator2 as u2
-import constant 
+import Constant 
 import time
 machineName='LKX0218807001731'
 d = u2.connect(machineName)
@@ -12,7 +12,7 @@ class APK:
         self.__activityName=acitvityName
 
     def start(self):
-        self.__d.press(constant.OP_KEY.HOME)
+        self.__d.press(Constant.OP_KEY.HOME)
         if(self.__activityName == None):
             self.__d.app_start(self.__packageName)
         else:
@@ -23,7 +23,7 @@ class APK:
 
     def stop(self):
         self.__d.app_stop(self.__packageName)
-        self.__d.press(constant.OP_KEY.HOME)      
+        self.__d.press(Constant.OP_KEY.HOME)      
 
     def __str__(self):
         return 'APK [ name=%s ,packageName=%s ,activityName=%s]' % (self.__aliasName,self.__packageName,self.__activityName)
