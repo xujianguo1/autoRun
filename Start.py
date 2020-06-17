@@ -1,45 +1,41 @@
-import os
-import sys
-from app import Config
-import logging
+import conf.Config #配置必须先引入，自执行，加载log配置
+import uiautomator2 as u2
+import time
+from app.settingAPK import SettingAPK
+def connectPhone():
+    machineName='8UR4C19C07001524'
+    adb = u2.connect(machineName)
+    return adb
+
+def test():
+    adb=connectPhone()
+    settingAPK = SettingAPK(adb)
+    settingAPK.start()
+    values = settingAPK.getSleepInfo()
+    cur = values[0]
+    max = values[1]
+    print("获取到的值：cur=%s ,max= %s" % (cur,max))
+    settingAPK.stop()
+    time.sleep(6)
+
+    print("我已经休眠了60.。。 要设置最大值了。。")
+    settingAPK.start()
+    settingAPK.setSleepInfo(max)
+    time.sleep(3)
+    settingAPK.stop 
+    print("最大值已经设置了，我要开始执行相关的任务了。。")
 
 
-runPath= sys.path[0]
-print("run path=%s" % runPath)
-#配置log
-Config.configLoging(os.path.join(runPath,'resources/logging.yml'))
+    settingAPK.start()
+    settingAPK.setSleepInfo(cur)
+    time.sleep(6)
+
+    settingAPK.stop()
+    print("全部执行完了")
 
 
 
-
-def logtest1():
-    logger = logging.getLogger('simpleExample')
-    logger.debug('debug message')
-    logger.info('info message')
-    logger.warning('warn message')
-    logger.error('error message')
-    logger.critical('critical message')    
-
-
-def logtest2():
-    logger = logging.getLogger(__name__)
-    logger.debug('debug message222222')
-    logger.info('info message22222')
-    logger.warning('warn message2222222')
-    logger.error('error message2222222')
-    logger.critical('critical message222222')  
-def logtest3():
-    logger = logging.getLogger('fileExample')
-    logger.debug('debug message fileExample')
-    logger.info('info message fileExample')
-    logger.warning('warn message fileExample')
-    logger.error('error message fileExample')
-    logger.critical('critical message fileExample')  
 
 
 if (__name__=="__main__"):
-   
-    logtest1()
-    logtest2()
-    logtest3()
-
+   test()

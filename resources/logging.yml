@@ -28,6 +28,10 @@ handlers:
     maxBytes: 10240
     backupCount: 3
 loggers:
+  app.Test:
+      level: DEBUG
+      handlers: [console]
+      propagate: yes
   simpleExample:
     level: DEBUG
     handlers: [console]
