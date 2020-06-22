@@ -7,6 +7,7 @@ class APK:
         self.__activityName=acitvityName
 
     def start(self):
+        self.stop()#先停止一次，让回到原始状态
         self.__adb.press(OP_KEY.HOME)
         if(self.__activityName == None):
             self.__adb.app_start(self.__packageName)
@@ -17,6 +18,11 @@ class APK:
     def stop(self):
         self.__adb.app_stop(self.__packageName)
         self.__adb.press(OP_KEY.HOME)      
+
+    #点击返回上一级
+    def pressBack(self): 
+        self.__adb.press(OP_KEY.BACK)
+
 
     def __str__(self):
         return 'APK [ name=%s ,packageName=%s ,activityName=%s]' % (self.__aliasName,self.__packageName,self.__activityName)

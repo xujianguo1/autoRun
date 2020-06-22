@@ -17,7 +17,7 @@ class SettingAPK(APK):
         self.logger.debug("设置获取休眠值：[%s] ,得到最大值：[%s]" % (selected,maxValue))
         return [selected,maxValue]
 
-    def setSleepInfo(self,targetText):
+    def __setSleepInfo(self,targetText):
         self.__adb(resourceId="android:id/title", text="显示和亮度").click()
         self.__adb(text="休眠").click()
         targetList=self.__adb(resourceId="android:id/select_dialog_listview").child(className="android.widget.CheckedTextView")
@@ -26,3 +26,21 @@ class SettingAPK(APK):
         self.logger.debug("设置获取休眠值：%s , 操作结果：%s" % (targetText,result))
         return result
 
+    #调整睡眠时间到最后一项
+    def modifySleeptime(self):
+        self.start()
+        values = self.getSleepInfo()
+        cur = values[0]
+        max = values[1]
+        self.logger.info("设置获取到的值：cur=%s ,max= %s" % (cur,max))
+        self.__orginal=cur
+        self.__setSleepInfo(max)
+        self.stop()
+        return cur
+
+    #恢复睡眠时间到原始值
+    def resetSleepTime(self):
+        self.start()
+        self.logger.info("恢复睡眠时间为："+self.__orginal)
+        self.__setSleepInfo(self.__orginal)
+        self.stop()
