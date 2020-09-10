@@ -1,0 +1,11 @@
+defaultPwd: 131032
+accountList:
+    #默认密码，不配置pwd则采用默认的
+    - account: 540830262700
+      pwd:
+    - account: 540830264000
+      pwd:
+    - account: 540300278672
+      pwd:
+    #-account: 540300273651
+     #pwd:

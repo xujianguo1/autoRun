@@ -3,45 +3,29 @@ import uiautomator2 as u2
 import time
 from app.settingAPK import SettingAPK
 from app.dfcfAPK import DfcfAPK
+from app.zsyhAPK import ZsyhAPK
+from myutil.OpDesc import OpMenu
+
+from app.yhzq.InnerFund import InnerFund
 
 dfcfConfigFile="resources/dfcf.yml"
 yhzqConfigFile="resources/yhzq.yml"
 yjbConfigFile="resources/yjb.yml"
+zsyhConfigFile="resources/zsyh.yml"
 
 def connectPhone():
-    #machineName='8UR4C19C07001524'
-    #adb = u2.connect(machineName)
-    ipAddress = "10.242.139.99"
-    adb= u2.connect_wifi(ipAddress)
+    opStr=input("请输入机器名或者IP（1：机器名，2：IP）：")
+    if opStr=="1" :
+        machineName = input("请输入机器名,1为默认[8UR4C19C07001524]：")
+        if machineName=="1":
+            machineName="8UR4C19C07001524"
+        adb = u2.connect(machineName)
+    else:
+        ipAddress = input("请输入要连接的机器IP：")
+        adb= u2.connect_wifi(ipAddress)
     return adb
 
 
-
-def testSetSleepTime():
-    adb=connectPhone()
-    settingAPK = SettingAPK(adb)
-    settingAPK.modifySleeptime()
-    values = settingAPK.getSleepInfo()
-    cur = values[0]
-    max = values[1]
-    print("获取到的值：cur=%s ,max= %s" % (cur,max))
-    settingAPK.stop()
-    time.sleep(6)
-
-    print("我已经休眠了60.。。 要设置最大值了。。")
-    settingAPK.start()
-    settingAPK.setSleepInfo(max)
-    time.sleep(3)
-    settingAPK.stop 
-    print("最大值已经设置了，我要开始执行相关的任务了。。")
-
-
-    settingAPK.start()
-    settingAPK.setSleepInfo(cur)
-    time.sleep(6)
-
-    settingAPK.stop()
-    print("全部执行完了")
 
 #东方财富申购新股测试
 def dfcfApplyNewStock():
@@ -54,8 +38,7 @@ def dfcfApplyNewStock():
 
 
 #东方财富申购新债
-def dfcfApplyNewCB():
-    adb=connectPhone()
+def dfcfApplyNewCB(adb):
     confDict=Config.loadConfig(dfcfConfigFile)
     dfcfApp = DfcfAPK(adb)
     
@@ -68,20 +51,50 @@ def dfcfApplyNewCB():
         dfcfApp.applyNewCB(account,pwd)
         dfcfApp.stop()
     print("新债打理完毕")
+
+def zsyhDaily(adb):
+    #zsConfig= Config.loadConfig(zsyhConfigFile)
+    zsyhApk= ZsyhAPK(adb)
+    zsyhApk.start()
+    time.sleep(5)
+    zsyhApk.login("13103245")
+    zsyhApk.bwjlPlan("路过","123456")
+    time.sleep(10)
+   # zsyhApk.stop()
+
+def yhzqApplyInnerFund(adb):
+
+    yhzqInnerFund=InnerFund(adb)
+    yhzqInnerFund.run()
+
 def mainFlow():
     adb=connectPhone()
     settingAPK = SettingAPK(adb)
-    settingAPK.modifySleeptime() #获取and 设置休眠时间
+    #settingAPK.modifySleeptime() #获取and 设置休眠时间
 
-    # 执行其他流程
-
-    
+    menu=initModules() #初始化模块信息
+    args=(adb)
+    menu.showMenuAn2dRun(args)
+    #zsyhDaily(adb)
     #任务结束，恢复休眠时间
     settingAPK.resetSleepTime()
     settingAPK.stop()
 
 
+    
+
+
+def initModules():
+    opMenu =OpMenu()
+    opMenu.addItem(1,"东方财富可转债申购",dfcfApplyNewCB)
+    opMenu.addItem(2,"银河证券场内基金申购(需手动登录)",yhzqApplyInnerFund)
+    return opMenu
+
 if (__name__=="__main__"):
     #testSetSleepTime()
     #dfcfApplyNewStock()
-    dfcfApplyNewCB()
+    #dfcfApplyNewCB()
+    mainFlow()
+    
+
+

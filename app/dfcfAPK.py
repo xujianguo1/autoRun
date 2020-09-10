@@ -67,6 +67,11 @@ class DfcfAPK(APK):
             return None
 
         self.logger.info("有新债申购，开始一键全部申购。。")
+        self.waitAndClickByText("一键全部申购")
+        self.waitAndClickByText("确定申购")
+        self.waitAndClickByText("确定")
+        self.logger.info("新债申购， 一键全部申购结束。。")
+        self.pressBack()
 
 
 

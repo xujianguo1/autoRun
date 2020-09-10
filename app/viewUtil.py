@@ -26,6 +26,14 @@ class ListView:
         result = kv['text'] 
         return result
 
+    #获取所有的列表值
+    def getAllValue(self):
+        values=[]
+        for item in self.__items:
+            kv=item.info
+            values.append(kv['text'])
+        return values
+
     def getFirstValue(self):
         return self.__getValue(0)
 
