@@ -74,10 +74,10 @@ def mainFlow():
 
     menu=initModules() #初始化模块信息
     args=(adb)
-    menu.showMenuAn2dRun(args)
+    menu.showMenuAndRun(args)
     #zsyhDaily(adb)
     #任务结束，恢复休眠时间
-    settingAPK.resetSleepTime()
+    #settingAPK.resetSleepTime()
     settingAPK.stop()
 
 

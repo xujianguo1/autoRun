@@ -50,7 +50,7 @@ class OpMenu(object):
 
     #获取输入& 运行，-1为返回，0为继续，其他则执行
     def getChooseItem(self):
-        opStr=input()
+        opStr=input("请输入选择：")
         if opStr=="-1" :
             return -1
         for item in self.__opItemList:

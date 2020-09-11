@@ -57,6 +57,8 @@ class APK:
     def getResourceAndInput(self,resId,inputText):
         self.__adb(resourceId=resId).wait(5) #默认等待5s
         self.__adb(resourceId=resId).set_text(inputText)
+        #不知道send_keys方法有什么区别
+        #self.__adb(resourceId=resId).send_keys(inputText) 
 
     #检查resId组价是否存在，存在就点击
     def checkExistsAndClick(self,resId):    
